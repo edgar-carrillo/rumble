@@ -18,3 +18,28 @@ a {
 * {
   box-sizing: border-box;
 }
+
+@font-face {
+  font-family: "Roboto-Regular";
+  src: url("../public/fonts/Roboto/Roboto-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Roboto-Bold";
+  src: url("../public/fonts/Roboto/Roboto-Bold.ttf");
+}
+
+@font-face {
+  font-family: "Roboto-Black";
+  src: url("../public/fonts/Roboto/Roboto-Black.ttf");
+}
+
+@font-face {
+  font-family: "Roboto-Light";
+  src: url("../public/fonts/Roboto/Roboto-Light.ttf");
+}
+
+@font-face {
+  font-family: "Bebas-Neue";
+  src: url("../public/fonts/Bebas_Neue/BebasNeue-Regular.ttf");
+}

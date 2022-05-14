@@ -18,6 +18,13 @@ module.exports = {
         'military-green': '#65793E',
         'flat-blue': '#3074AB',
       },
+      fontFamily: {
+        'regular': ['Roboto-Regular'],
+        'bold': ['Roboto-Bold'],
+        'dark': ['Roboto-Black'],
+        'light': ['Roboto-Light'],
+        'logo': ['Bebas-Neue'],
+      },
     },
   },
   plugins: [],
