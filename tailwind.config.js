@@ -7,14 +7,14 @@ module.exports = {
     extend: {
       colors: {
         'sunset-orange': '#FF6161',
-        'limed-spruce': '37474F',
-        'dark-jungle-green': '1F2427',
-        'white': 'FFFFFF',
+        'limed-spruce': '#37474F',
+        'dark-jungle-green': '#1F2427',
+        'white': '#FFFFFF',
         'star-dust': '#A59E9E',
         'star-dust-dark': '#9D9D9D',
         'reef-gold': '#A48111',
         'moccasin': '#8D733F',
-        'black': '000000',
+        'black': '#000000',
         'military-green': '#65793E',
         'flat-blue': '#3074AB',
       },
