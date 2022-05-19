@@ -1,4 +1,7 @@
 import Image from 'next/image';
+import { signInWithRedirect } from "firebase/auth";
+import { auth, provider } from '../firebaseConfig';
+import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 
 // Assets
 import imgSrc from '../public/images/people-at-restaurant.jpg';
@@ -21,11 +24,6 @@ function Btn({ text, primary, clickHandler }) {
 }
 
 export default function LoginPage() {
-
-  const createAccount = () => {
-    console.log('creating account!');
-  };
-
   const login = () => {
     console.log('logging in');
   }
@@ -53,7 +51,7 @@ export default function LoginPage() {
         </div>
         {/* ---------- Buttons ---------- */}
         <div className="flex flex-col gap-5">
-          <Btn primary text="Create new account" clickHandler={createAccount} />
+          <Btn primary text="Create new account" clickHandler={() => signInWithRedirect(auth, provider)} />
           <Btn text="Login with email" clickHandler={login} />
         </div>
         {/* ---------- Terms and Conditions ---------- */}
