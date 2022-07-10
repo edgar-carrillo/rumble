@@ -5,7 +5,7 @@ import imgSrc from '../public/images/mobile-user.svg';
 
 export default function DesktopPage() {
   return (
-    <div className="text-white h-screen w-screen flex flex-col items-center justify-center gap-10 xl:gap-0">
+    <div className="text-white h-screen w-screen flex flex-col items-center justify-center gap-10 xl:gap-0 bg-dark-jungle-green">
       {/* ----------- Title ----------- */}
       <div className="flex flex-col-reverse items-center xl:flex-row xl:gap-10">
         <div className="text-6xl font-dark uppercase xl:text-7xl">
