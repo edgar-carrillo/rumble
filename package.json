@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "express": "^4.18.1",
     "firebase": "^9.8.1",
     "firebaseui": "^6.0.1",
