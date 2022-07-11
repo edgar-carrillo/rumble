@@ -11,18 +11,22 @@ const shadowContainerClass = "inline-block shadow-light rounded-full overflow-hi
 
 const iconClass = "w-1/2 h-1/2 relative";
 
-const BackButton = ({ clickHandler }) => {
+interface BackBtnProps {
+  readonly clickHandler: () => void;
+};
+
+const BackBtn = ({ clickHandler }: BackBtnProps) => {
   return (
     <div className={shadowContainerClass}>
       <div className={btnContainerClass}>
-        <button type="button" className={btnClass} onClick={() => clickHandler()}>
+        <button type="button" className={btnClass} onClick={clickHandler}>
         </button>
         <div className={iconClass}>
-            <Image className="absolute" src={leftArrow} alt="" layout="fill"/>
+          <Image className="absolute" src={leftArrow} alt="" layout="fill"/>
         </div>
       </div>
     </div>
   );
 };
 
-export default BackButton;
+export default BackBtn;
