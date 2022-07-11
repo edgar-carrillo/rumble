@@ -1,19 +1,19 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 // Firebase
 import { signInWithRedirect } from "firebase/auth";
 import { auth, provider } from '../firebaseConfig';
-import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
 // Assets
 import imgSrc from '../public/images/people-at-restaurant.jpg';
+import users from '../scripts/models/users';
 
 // Components
-import LoadingPage from './LoadingPage';
-import { Btn1 } from '../components/Btns';
+import LoadingPage from '../components/loading';
+import { HomeBtn } from '../components/Btns';
 
 function Gradient() {
   return (
@@ -23,15 +23,19 @@ function Gradient() {
 
 export default function LoginPage() {
   const router = useRouter();
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
 
-  if (user) {
-    router.push('/App');
-  }
-
-  const login = () => {
-    console.log('logging in');
-  }
+  useEffect(() => {
+    if (user) {
+      users.getSingleUser(user.email)
+        .then((response: any) => {
+          if (response.status === 200) router.push('/home');
+        })
+        .catch((err) => {
+          if (err.status === 404) router.push('/login-form');
+        });
+    }
+  }, [user, router]);
 
   if (loading) {
     return (
@@ -42,7 +46,7 @@ export default function LoginPage() {
       <div className="relative h-screen">
         {/* ---------- Background ---------- */}
         <div className="absolute h-full w-full">
-          <Image src={imgSrc} alt="top down shot of friends eating at a table." layout="fill" objectFit="cover"/>
+          <Image src={imgSrc} alt="top down shot of friends eating at a table." layout="fill" objectFit="cover" />
           <Gradient />
           <Gradient />
           <Gradient />
@@ -55,17 +59,24 @@ export default function LoginPage() {
           <div>
             <div className="mb-5">
               <h1 className="text-sunset-orange font-logo text-5xl">Rumble</h1>
-              <p className="text-white font-bold text-5xl">Swipe, match and order</p>
+              <p className="text-white font-bold text-5xl">Swipe, match and choose</p>
             </div>
             <p className="text-star-dust">Make not knowing where to eat a fun experience 🍔</p>
           </div>
           {/* ---------- Buttons ---------- */}
           <div className="flex flex-col gap-5">
-            <Btn1 primary text="Create new account" clickHandler={() => signInWithRedirect(auth, provider)} />
-            <Btn1 text="Login with email" clickHandler={login} />
+            <HomeBtn text="Sign in with Google" clickHandler={() => signInWithRedirect(auth, provider)} />
+            <HomeBtn text="Visit More Apps" link="https://www.edgarthedeveloper.com/" secondary />
           </div>
           {/* ---------- Terms and Conditions ---------- */}
-          <a href="https://github.com/ec-rilo/rumble" target="_blank" rel="noreferrer" className="text-star-dust text-center mt-10 oaacity-50">Github Repository</a>
+          <a
+            href="https://github.com/ec-rilo/rumble"
+            target="_blank"
+            rel="noreferrer"
+            className="text-light-white text-center mt-10"
+          >
+            Github Repository
+          </a>
         </div>
       </div>
     );
