@@ -4,9 +4,8 @@ import { LegacyRef } from 'react';
 import loginForm from '../../../scripts/models/loginForm';
 
 interface InputProps {
-  readonly handleValidation: Function;
-  readonly handleIsActive: () => void;
-  readonly setActive: () => void;
+  readonly validationHandler: Function;
+  readonly clickHandler: (arg0: Boolean) => void;
   readonly type: string;
   readonly inputText?: string;
   readonly elem: LegacyRef<HTMLInputElement> | undefined;
@@ -14,7 +13,7 @@ interface InputProps {
 };
 
 export default function Input({
-  handleValidation, handleIsActive, setActive, type, inputText, elem, labelText,
+  validationHandler, clickHandler, type, inputText, elem, labelText,
 }: InputProps) {
   const defaultClassName = "bg-transparent h-8 outline-none box-border text-base transition-all";
   let className = defaultClassName + " border-b border-white text-white";
@@ -24,9 +23,9 @@ export default function Input({
       id={loginForm.formatInputName(labelText)}
       name={loginForm.formatInputName(labelText)}
       className={className}
-      onChange={(e) => handleValidation(e.target)}
-      onFocus={setActive}
-      onBlur={handleIsActive}
+      onChange={(e) => validationHandler(e.target.value, e.target.validationMessage)}
+      onFocus={() => clickHandler(true)}
+      onBlur={() => clickHandler(false)}
       type={type}
       defaultValue={inputText || ''}
       ref={elem}
