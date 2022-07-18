@@ -19,9 +19,9 @@ export default function NamePage({
 }: NamePageProps) {
   const [validEntry, setValidEntry] = useState(false);
 
-  const toggleValidEntry = (val: Boolean) => {
+  const entryHandler = (val: Boolean) => {
     setValidEntry(validEntry === val ? validEntry : !validEntry);
-  }
+  };
 
   return (
     <LoginPageLayout
@@ -38,7 +38,7 @@ export default function NamePage({
           errorHandler={loginForm.nameErrorHandler}
           inputType="text"
           inputText={userName}
-          updateValidEntry={toggleValidEntry}
+          entryHandler={entryHandler}
         />
       </div>
     </LoginPageLayout>
