@@ -11,11 +11,15 @@ interface InputContainerProps {
   readonly inputType: string;
   readonly errorHandler: Function;
   readonly inputText?: string;
-  readonly updateValidEntry: (arg0: Boolean) => void;
+  readonly entryHandler: (arg0: Boolean, arg1: string) => void;
 };
 
 export default function InputContainer({
-  labelText, inputType, errorHandler, inputText, updateValidEntry,
+  labelText,
+  inputType,
+  errorHandler,
+  inputText,
+  entryHandler,
 }: InputContainerProps) {
   const [userInput, setUserInput] = useState('');
   const [isActive, setIsActive] = useState(false);
@@ -25,39 +29,40 @@ export default function InputContainer({
 
   const inputElem = useRef<HTMLInputElement>(null);
 
-  const updateErrorMsg = (elem: HTMLInputElement) => {
-    setErrorMsg(elem.validationMessage);
+  const updateErrorMsg = (text: string) => {
+    setErrorMsg(text);
   };
 
-  const handleErrors = useCallback((elem: HTMLInputElement) => {
-    elem.setCustomValidity('');
-    const errorText = errorHandler(elem.value, elem.validationMessage);
+  const errorMsgHandler = useCallback((text: string, errorMsg: string) => {
+    const errorText = errorHandler(text, errorMsg);
     errorText ? setIsValid(false) : setIsValid(true);
-    elem.setCustomValidity(errorText);
+    updateErrorMsg(errorText);
   }, [errorHandler]);
 
-  const handleValidation = useCallback((elem: HTMLInputElement) => {
-    setUserInput(elem.value);
-    if (elem.value.length > 0) {
+  const handleValidation = (text: string, errorMsg: string) => {
+    setUserInput(text);
+    if (text.length > 0) {
       setIsActive(true);
       setIsDefault(false);
     }
-    handleErrors(elem);
-    updateErrorMsg(elem);
-  }, [handleErrors]);
+    errorMsgHandler(text, errorMsg);
+  };
 
-  const handleIsActive = () => {
-    if (userInput.length === 0) setIsActive(false);
+  const handleFocus = (isFocused: Boolean) => {
+    isFocused ? setIsActive(true) : setIsActive(false);
   };
 
   useEffect(() => {
-    const { current } = inputElem;
-    if (inputText && current) handleValidation(current);
-  }, [inputText, inputElem, handleValidation]);
+    entryHandler(isValid, userInput);
+  }, [isValid, userInput, entryHandler]);
 
   useEffect(() => {
-    updateValidEntry(isValid);
-  }, [isValid, updateValidEntry]);
+    const { current } = inputElem;
+    if (inputText && current) {
+      handleValidation(inputText, current.validationMessage);
+      current.value = inputText;
+    }
+  }, []);
 
   return (
     <div className="relative my-8">
@@ -70,9 +75,8 @@ export default function InputContainer({
             isDefault={isDefault}
           />
           <Input
-            handleValidation={handleValidation}
-            handleIsActive={handleIsActive}
-            setActive={() => setIsActive(true)}
+            validationHandler={handleValidation}
+            clickHandler={handleFocus}
             type={inputType}
             inputText={inputText}
             labelText={labelText}
