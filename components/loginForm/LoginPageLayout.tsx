@@ -15,7 +15,7 @@ interface LoginPageLayoutProps {
 export default function LoginPageLayout({
   goPrevPage, goNextPage, isVisible, isValidEntry, title, description, children,
  }: LoginPageLayoutProps) {
-  let defaultClassName = "flex flex-col h-screen w-screen bg-dark-jungle-green px-5 py-10";
+  let defaultClassName = "flex flex-col min-h-screen w-screen bg-dark-jungle-green px-5 py-10";
   let className = defaultClassName;
   if (!isVisible) className = defaultClassName + " hidden";
 
