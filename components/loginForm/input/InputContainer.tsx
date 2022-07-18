@@ -49,7 +49,11 @@ export default function InputContainer({
   };
 
   const handleFocus = (isFocused: Boolean) => {
-    isFocused ? setIsActive(true) : setIsActive(false);
+    if (isFocused) {
+      setIsActive(true);
+    } else if (!isFocused && userInput.length === 0) {
+      setIsActive(false);
+    }
   };
 
   useEffect(() => {
