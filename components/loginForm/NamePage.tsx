@@ -30,7 +30,7 @@ export default function NamePage({
       goNextPage={goNextPage}
       title="Enter name"
       description="This is how your friends will view you on Rumble."
-      isValidEntry={validEntry}
+      showButton={validEntry}
     >
       <div className="flex-1">
         <InputContainer
