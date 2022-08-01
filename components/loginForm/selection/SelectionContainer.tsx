@@ -14,7 +14,7 @@ function Item({ text, isSelected }: ItemProps) {
 }
 
 interface SelectionContainerProps {
-  readonly items: [string] | never[];
+  readonly items: string[];
   readonly selectionHandler: (arg0: number) => void;
 };
 
