@@ -66,7 +66,7 @@ export default function LocationPage({
       goNextPage={goNextPage}
       title="Choose location"
       description="This tailors what restaurants we'll show you on Rumble."
-      isValidEntry={validEntry && selectedLocation.length > 0}
+      showButton={validEntry && selectedLocation.length > 0}
     >
       <div className="flex-1">
         <InputContainer
