@@ -10,6 +10,7 @@ import { auth } from '../firebaseConfig';
 import LoadingPage from '../components/loading';
 import NamePage from '../components/loginForm/NamePage';
 import LocationPage from '../components/loginForm/LocationPage';
+import CuisinePage from '../components/loginForm/CuisinePage';
 
 export default function LoginForm() {
   const [user, loading] = useAuthState(auth);
@@ -39,6 +40,11 @@ export default function LoginForm() {
             isVisible={currPage === 'location-page'}
             goPrevPage={() => setCurrPage('name-page')}
             goNextPage={() => setCurrPage('cuisine-page')}
+          />
+          <CuisinePage
+            isVisible={currPage === 'cuisine-page'}
+            goPrevPage={() => setCurrPage('location-page')}
+            goNextPage={() => setCurrPage('photo-page')}
           />
         </form>
       }
