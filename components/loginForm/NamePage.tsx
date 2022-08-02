@@ -19,8 +19,9 @@ export default function NamePage({
 }: NamePageProps) {
   const [validEntry, setValidEntry] = useState(false);
 
-  const entryHandler = (val: Boolean) => {
+  const entryHandler = (val: Boolean, name: string) => {
     setValidEntry(validEntry === val ? validEntry : !validEntry);
+    if (val) loginForm.updateName(name);
   };
 
   return (
