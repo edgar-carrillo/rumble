@@ -13,6 +13,10 @@ import LocationPage from '../components/loginForm/LocationPage';
 import CuisinePage from '../components/loginForm/CuisinePage';
 import PhotoPage from '../components/loginForm/PhotoPage';
 
+if (typeof window !== 'undefined') {
+  if (!localStorage.getItem('username')) localStorage.setItem('username', '');
+}
+
 export default function LoginForm() {
   const [user, loading] = useAuthState(auth);
   const [currPage, setCurrPage] = useState('name-page');
@@ -49,7 +53,7 @@ export default function LoginForm() {
           />
           <PhotoPage
             isVisible={currPage === 'photo-page'}
-            goPrevPage={() => {}}
+            goPrevPage={() => setCurrPage('cuisine-page')}
             goNextPage={() => {}}
           />
         </form>
