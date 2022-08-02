@@ -35,7 +35,7 @@ export default function LoginForm() {
         <LoadingPage /> :
         <form>
           <NamePage
-            userName={user?.displayName || ''}
+            userName={localStorage.getItem('username') || user?.displayName || ''}
             isVisible={currPage === 'name-page'}
             goPrevPage={() => logout()}
             goNextPage={() => setCurrPage('location-page')}
