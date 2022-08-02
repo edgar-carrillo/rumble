@@ -35,7 +35,9 @@ const loginFormModel = {
   formatLocationName: (location: string) => {
     if (location.length > 40) location = location.slice(0, 41).concat('...');
     return location;
-  }
+  },
+
+  updateName: (username: string) => localStorage.setItem('username', username),
 
 };
 
