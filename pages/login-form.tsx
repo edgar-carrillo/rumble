@@ -16,6 +16,7 @@ import PhotoPage from '../components/loginForm/PhotoPage';
 if (typeof window !== 'undefined') {
   if (!localStorage.getItem('username')) localStorage.setItem('username', '');
   if (!localStorage.getItem('location')) localStorage.setItem('location', '');
+  if (!localStorage.getItem('cuisine')) localStorage.setItem('cuisine', '');
 }
 
 export default function LoginForm() {
@@ -48,6 +49,7 @@ export default function LoginForm() {
             goNextPage={() => setCurrPage('cuisine-page')}
           />
           <CuisinePage
+            userCuisine={localStorage.getItem('cuisine') || ''}
             isVisible={currPage === 'cuisine-page'}
             goPrevPage={() => setCurrPage('location-page')}
             goNextPage={() => setCurrPage('photo-page')}
