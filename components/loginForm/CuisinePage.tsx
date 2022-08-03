@@ -2,23 +2,28 @@ import { useState } from 'react';
 
 // Assets
 import cuisines from '../../assets/cuisines';
+import loginFormModel from '../../scripts/models/loginForm';
 
 // Components
 import LoginPageLayout from './LoginPageLayout';
 import SelectionContainer from './selection/SelectionContainer';
 
 interface CuisinePageProps {
+  readonly userCuisine: string;
   readonly isVisible: Boolean;
   readonly goPrevPage: () => void;
   readonly goNextPage: () => void;
 };
 
 export default function CuisinePage({
-  isVisible, goPrevPage, goNextPage,
+  userCuisine, isVisible, goPrevPage, goNextPage,
 }: CuisinePageProps) {
-  const [cuisine, setCuisine] = useState('');
+  const [cuisine, setCuisine] = useState(userCuisine || '');
 
-  const cuisineHandler = (index: number) => setCuisine(cuisines[index]);
+  const cuisineHandler = (index: number) => {
+    setCuisine(cuisines[index]);
+    loginFormModel.updateCuisine(cuisines[index]);
+  };
 
   return (
     <LoginPageLayout
@@ -33,6 +38,7 @@ export default function CuisinePage({
         <SelectionContainer
           items={cuisines}
           selectionHandler={cuisineHandler}
+          defaultSelected={userCuisine ? cuisines.indexOf(userCuisine) : -1}
         />
       </div>
     </LoginPageLayout>
