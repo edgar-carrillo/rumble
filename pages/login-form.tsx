@@ -17,6 +17,7 @@ if (typeof window !== 'undefined') {
   if (!localStorage.getItem('username')) localStorage.setItem('username', '');
   if (!localStorage.getItem('location')) localStorage.setItem('location', '');
   if (!localStorage.getItem('cuisine')) localStorage.setItem('cuisine', '');
+  if (!localStorage.getItem('photo')) localStorage.setItem('photo', '');
 }
 
 export default function LoginForm() {
@@ -55,6 +56,7 @@ export default function LoginForm() {
             goNextPage={() => setCurrPage('photo-page')}
           />
           <PhotoPage
+            userPhoto={localStorage.getItem('photo') || ''}
             isVisible={currPage === 'photo-page'}
             goPrevPage={() => setCurrPage('cuisine-page')}
             goNextPage={() => {}}
