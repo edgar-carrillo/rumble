@@ -35,7 +35,12 @@ export default function LoginForm() {
   return (
     <div>
       { loading ?
-        <LoadingPage /> :
+        <LoadingPage
+          title="Verifying Credentials"
+          description="Just making sure data is squeeky clean."
+          centerText
+          isVisible
+        /> :
         <form>
           <NamePage
             userName={localStorage.getItem('username') || user?.displayName || ''}
@@ -59,7 +64,15 @@ export default function LoginForm() {
             userPhoto={localStorage.getItem('photo') || ''}
             isVisible={currPage === 'photo-page'}
             goPrevPage={() => setCurrPage('cuisine-page')}
-            goNextPage={() => {}}
+            goNextPage={() => {
+              setCurrPage('loading-page');
+            }}
+          />
+          <LoadingPage
+            title="Setting up account"
+            description="This will only take a second while we set up your profile on our end."
+            isVisible={currPage === 'loading-page'}
+            centerText
           />
         </form>
       }
