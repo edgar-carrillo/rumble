@@ -12,7 +12,7 @@ const loginFormModel = {
   locationErrorHandler: function (location: string, customError: string) {
     if (customError.length > 0) return customError;
     if (location.length <= 5) return 'Please enter more then 5 characters.';
-    if (location.length >= 40) return 'Please enter less then 40 characters.';
+    if (location.length >= 100) return 'Please enter less then 100 characters.';
     return '';
   },
 
@@ -38,6 +38,8 @@ const loginFormModel = {
   },
 
   updateName: (username: string) => localStorage.setItem('username', username),
+
+  updateLocation: (location: string) => localStorage.setItem('location', location),
 
 };
 
