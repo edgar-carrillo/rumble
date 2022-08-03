@@ -66,13 +66,20 @@ export default function LocationPage({
 
   }, [validEntry, getLocations]);
 
-  const locationHandler = (index: number) => {
-    if (locations.length) setSelectedLocation(locations[index]);
-  };
+  const locationHandler = useCallback((index: number) => {
+    if (locations.length) {
+      setSelectedLocation(locations[index]);
+      loginFormModels.updateLocation(locations[index]);
+    }
+  }, [locations]);
 
   useEffect(() => {
     if (!locations.length) setSelectedLocation('');
   }, [locations]);
+
+  useEffect(() => {
+    if (userLocation && locations) locationHandler(0)
+  }, [userLocation, locations, locationHandler])
 
   return (
     <LoginPageLayout
@@ -89,7 +96,7 @@ export default function LocationPage({
           errorHandler={loginFormModels.locationErrorHandler}
           inputType="search"
           entryHandler={entryHandler}
-          inputText={selectedLocation}
+          inputText={userLocation}
         />
         <SelectionContainer
           items={formatLocations(locations)}
