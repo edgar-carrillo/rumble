@@ -28,28 +28,43 @@ export default function LocationPage({
     });
   };
 
-  const populateLocationEntries = useCallback((location: string, isValid: Boolean) => {
+  const getLocations = useCallback((location: string, isValid: Boolean) => new Promise((resolve, reject) => {
     if (isValid) {
       loginFormModels.getLocations(location)
         .then((response: any) => {
-          let formattedLocation = response.map((location: any) => {
+          let formattedLocations = response.map((location: any) => {
             return location['matching_full_name'];
           });
-          setLocations(formattedLocation);
+
+          if (formattedLocations.length) resolve(true);
+          else resolve(false);
+
+          setLocations(formattedLocations);
         })
         .catch((err) => {
-          console.error(err);
           setLocations([]);
+          reject(err);
         })
     } else {
       setLocations([]);
+      resolve(false);
     }
-  }, []);
+  }), []);
 
   const entryHandler = useCallback((isValid: Boolean, text: string) => {
-    setValidEntry(validEntry === isValid ? validEntry : !validEntry);
-    populateLocationEntries(text, isValid);
-  }, [validEntry, populateLocationEntries]);
+    let valid = validEntry;
+
+    getLocations(text, isValid)
+      .then((response) => {
+        valid = Boolean(response);
+        console.log(valid);
+        setValidEntry(valid);
+      })
+      .catch((response) => {
+        console.error('There was an error in retrieving locations: ', response);
+      });
+
+  }, [validEntry, getLocations]);
 
   const locationHandler = (index: number) => {
     if (locations.length) setSelectedLocation(locations[index]);
