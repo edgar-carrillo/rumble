@@ -57,7 +57,6 @@ export default function LocationPage({
     getLocations(text, isValid)
       .then((response) => {
         valid = Boolean(response);
-        console.log(valid);
         setValidEntry(valid);
       })
       .catch((response) => {
