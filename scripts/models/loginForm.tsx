@@ -41,6 +41,8 @@ const loginFormModel = {
 
   updateLocation: (location: string) => localStorage.setItem('location', location),
 
+  updateCuisine: (cuisine: string) => localStorage.setItem('cuisine', cuisine),
+
 };
 
 export default loginFormModel;
