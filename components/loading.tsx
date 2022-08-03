@@ -7,13 +7,16 @@ interface LoadingPageProps {
   readonly title: string;
   readonly description?: string;
   readonly centerText?: Boolean;
+  readonly isVisible?: Boolean;
 };
 
 export default function LoadingPage({
-  title, description, centerText,
+  title, description, centerText, isVisible,
  }: LoadingPageProps) {
-  let defaultClassName = "flex flex-col min-h-screen w-screen bg-dark-jungle-green px-10 py-20";
+  let defaultClassName = "flex flex-col min-h-screen w-screen bg-dark-jungle-green px-10 py-20 block";
   let className = defaultClassName;
+
+  if (!isVisible) className = defaultClassName + " hidden";
 
   return (
     <div className={className}>
