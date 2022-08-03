@@ -20,8 +20,13 @@ function ImgContainer({ src, alt }: ImgContainerProps) {
   );
 }
 
-export default function ImgUpload({ setImg }: any) {
-  const [imgSrc, setImgSrc] = useState('');
+interface ImgUploadProps {
+  readonly setImg: Function,
+  readonly defaultImg?: string;
+};
+
+export default function ImgUpload({ setImg, defaultImg }: ImgUploadProps) {
+  const [imgSrc, setImgSrc] = useState(defaultImg || '');
 
   const imgHandler = (imgSrc: any) => {
     if (imgSrc) setImgSrc(imgSrc);
