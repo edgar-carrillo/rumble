@@ -16,12 +16,13 @@ function Item({ text, isSelected }: ItemProps) {
 interface SelectionContainerProps {
   readonly items: string[];
   readonly selectionHandler: (arg0: number) => void;
+  readonly defaultSelected?: number;
 };
 
 export default function SelectionContainer({
-  items, selectionHandler,
+  items, selectionHandler, defaultSelected,
 }: SelectionContainerProps) {
-  const [selectedItem, setSelectedItem] = useState(-1);
+  const [selectedItem, setSelectedItem] = useState(defaultSelected !== undefined ? defaultSelected : -1);
 
   useEffect(() => {
     if (selectedItem !== -1) selectionHandler(selectedItem);
