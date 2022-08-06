@@ -45,6 +45,12 @@ const loginFormModel = {
 
   updatePhoto: (photo: string) => localStorage.setItem('photo', photo),
 
+  uploadImg: (imgURL: string) => new Promise((resolve, reject) => {
+    axios.post('/photos/user', { imgURL })
+      .then((response) => resolve(response))
+      .catch((error) => reject(error));
+  }),
+
 };
 
 export default loginFormModel;
