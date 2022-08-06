@@ -49,8 +49,12 @@ export default function ImgBtn({ eventHandler, addIcon }: ImgBtnProps) {
         }}
         onChange={(e) => {
           if (e.target.files && addIcon) {
-            const imgSrc = URL.createObjectURL(e.target.files[0]);
-            eventHandler(imgSrc);
+            const imgBlob = e.target.files[0];
+            const reader = new FileReader();
+            reader.readAsDataURL(imgBlob);
+            reader.addEventListener('load', () => {
+              eventHandler(reader.result);
+            });
           }
         }}
       />
