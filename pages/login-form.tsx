@@ -6,12 +6,17 @@ import { signOut } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../firebaseConfig';
 
+// Assets
+import User from '../scripts/classes/User';
+import MongoDatabase from '../scripts/classes/MongoDatabase';
+
 // Components
 import LoadingPage from '../components/loading';
 import NamePage from '../components/loginForm/NamePage';
 import LocationPage from '../components/loginForm/LocationPage';
 import CuisinePage from '../components/loginForm/CuisinePage';
 import PhotoPage from '../components/loginForm/PhotoPage';
+import ErrorPage from '../components/ErrorPage';
 
 if (typeof window !== 'undefined') {
   if (!localStorage.getItem('username')) localStorage.setItem('username', '');
@@ -21,7 +26,7 @@ if (typeof window !== 'undefined') {
 }
 
 export default function LoginForm() {
-  const [user, loading] = useAuthState(auth);
+  const [firebaseUser, loading] = useAuthState(auth);
   const [currPage, setCurrPage] = useState('name-page');
   const router = useRouter();
 
@@ -30,6 +35,28 @@ export default function LoginForm() {
       .then(() => {
         router.push('/');
       });
+  }
+
+  function createUser() {
+    const database = new MongoDatabase();
+    const user = new User({
+      username: localStorage.getItem('username') || '',
+      email: firebaseUser?.email || '',
+      location: localStorage.getItem('location') || '',
+      cuisine: localStorage.getItem('cuisine') || '',
+      photoURL: localStorage.getItem('photo') || '',
+    });
+
+    return new Promise((resolve, reject) => {
+      user.updateWithCloudinaryPhoto()
+        .then(() => database.createUser(user.getData()))
+        .then(() => resolve({
+          message: 'Added user to database successfully.',
+          statusCode: 200,
+          userData: user.getData(),
+        }))
+        .catch((error) => reject(error));
+    });
   }
 
   return (
@@ -43,7 +70,7 @@ export default function LoginForm() {
         /> :
         <form>
           <NamePage
-            userName={localStorage.getItem('username') || user?.displayName || ''}
+            userName={localStorage.getItem('username') || firebaseUser?.displayName || ''}
             isVisible={currPage === 'name-page'}
             goPrevPage={() => logout()}
             goNextPage={() => setCurrPage('location-page')}
@@ -66,12 +93,24 @@ export default function LoginForm() {
             goPrevPage={() => setCurrPage('cuisine-page')}
             goNextPage={() => {
               setCurrPage('loading-page');
+              createUser()
+                .then(() => {/* Go to swipe page */})
+                .catch((error) => {
+                  console.error(error);
+                  setCurrPage('error-page');
+                });
             }}
           />
           <LoadingPage
             title="Setting up account"
             description="This will only take a second while we set up your profile on our end."
             isVisible={currPage === 'loading-page'}
+            centerText
+          />
+          <ErrorPage
+            title="Failed to setup account"
+            description="Our apologies. Something occured while setting up your account. Please try again."
+            isVisible={currPage === 'error-page'}
             centerText
           />
         </form>
