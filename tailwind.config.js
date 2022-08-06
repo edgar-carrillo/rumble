@@ -19,6 +19,7 @@ module.exports = {
         'military-green': '#65793E',
         'flat-blue': '#3074AB',
         'amber': '#ffbf00',
+        'dark-red': '#58181F',
       },
       fontFamily: {
         'regular': ['Roboto-Regular'],
