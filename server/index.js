@@ -8,6 +8,13 @@ const express = require('express');
 nextApp.prepare().then(() => {
   const app = express();
   const userRoutes = require('./routes/users');
+  const photoRoutes = require('./routes/photoRoutes');
+
+  // Register Routes with custom body constraints
+  app.use('/photos', photoRoutes);
+
+  // Application middleware
+  app.use(express.json());
 
   // Register Routes
   app.use('/users', userRoutes);
