@@ -9,6 +9,7 @@ interface UserProps {
 };
 
 class MongoDatabase {
+
   createUser(userData: UserProps) {
     return new Promise((resolve, reject) => {
       axios.post('/users/', { userData })
@@ -16,6 +17,15 @@ class MongoDatabase {
         .catch((error) => reject(error));
     });
   }
+
+  getUser(email: string) {
+    return new Promise((resolve, reject) => {
+      axios.get(`users/?email=${email}`)
+        .then((response: any) => resolve(response))
+        .catch((error) => reject(error));
+    });
+  }
+
 }
 
 export default MongoDatabase;
