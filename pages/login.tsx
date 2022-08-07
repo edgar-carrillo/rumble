@@ -10,6 +10,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 // Assets
 import imgSrc from '../public/images/people-at-restaurant.jpg';
 import users from '../scripts/models/users';
+import MongoDatabase from '../scripts/classes/MongoDatabase';
 
 // Components
 import LoadingPage from '../components/loading';
@@ -39,7 +40,12 @@ export default function LoginPage() {
 
   if (loading) {
     return (
-      <LoadingPage />
+      <LoadingPage
+        title="Verifying Credentials"
+        description="Checking our servers for your data."
+        isVisible
+        centerText
+      />
     )
   } else {
     return (
