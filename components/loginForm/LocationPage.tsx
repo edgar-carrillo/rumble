@@ -28,36 +28,57 @@ export default function LocationPage({
     });
   };
 
-  const populateLocationEntries = useCallback((location: string, isValid: Boolean) => {
+  const getLocations = useCallback((location: string, isValid: Boolean) => new Promise((resolve, reject) => {
     if (isValid) {
       loginFormModels.getLocations(location)
         .then((response: any) => {
-          let formattedLocation = response.map((location: any) => {
+          let formattedLocations = response.map((location: any) => {
             return location['matching_full_name'];
           });
-          setLocations(formattedLocation);
+
+          if (formattedLocations.length) resolve(true);
+          else resolve(false);
+
+          setLocations(formattedLocations);
         })
         .catch((err) => {
-          console.error(err);
           setLocations([]);
+          reject(err);
         })
     } else {
       setLocations([]);
+      resolve(false);
     }
-  }, []);
+  }), []);
 
   const entryHandler = useCallback((isValid: Boolean, text: string) => {
-    setValidEntry(validEntry === isValid ? validEntry : !validEntry);
-    populateLocationEntries(text, isValid);
-  }, [validEntry, populateLocationEntries]);
+    let valid = validEntry;
 
-  const locationHandler = (index: number) => {
-    if (locations.length) setSelectedLocation(locations[index]);
-  };
+    getLocations(text, isValid)
+      .then((response) => {
+        valid = Boolean(response);
+        setValidEntry(valid);
+      })
+      .catch((response) => {
+        console.error('There was an error in retrieving locations: ', response);
+      });
+
+  }, [validEntry, getLocations]);
+
+  const locationHandler = useCallback((index: number) => {
+    if (locations.length) {
+      setSelectedLocation(locations[index]);
+      loginFormModels.updateLocation(locations[index]);
+    }
+  }, [locations]);
 
   useEffect(() => {
     if (!locations.length) setSelectedLocation('');
   }, [locations]);
+
+  useEffect(() => {
+    if (userLocation && locations) locationHandler(0)
+  }, [userLocation, locations, locationHandler])
 
   return (
     <LoginPageLayout
@@ -66,7 +87,7 @@ export default function LocationPage({
       goNextPage={goNextPage}
       title="Choose location"
       description="This tailors what restaurants we'll show you on Rumble."
-      isValidEntry={validEntry && selectedLocation.length > 0}
+      showButton={validEntry && selectedLocation.length > 0}
     >
       <div className="flex-1">
         <InputContainer
@@ -74,7 +95,7 @@ export default function LocationPage({
           errorHandler={loginFormModels.locationErrorHandler}
           inputType="search"
           entryHandler={entryHandler}
-          inputText={selectedLocation}
+          inputText={userLocation}
         />
         <SelectionContainer
           items={formatLocations(locations)}

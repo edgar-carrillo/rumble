@@ -19,9 +19,10 @@ export default function NamePage({
 }: NamePageProps) {
   const [validEntry, setValidEntry] = useState(false);
 
-  const toggleValidEntry = (val: Boolean) => {
+  const entryHandler = (val: Boolean, name: string) => {
     setValidEntry(validEntry === val ? validEntry : !validEntry);
-  }
+    if (val) loginForm.updateName(name);
+  };
 
   return (
     <LoginPageLayout
@@ -30,7 +31,7 @@ export default function NamePage({
       goNextPage={goNextPage}
       title="Enter name"
       description="This is how your friends will view you on Rumble."
-      isValidEntry={validEntry}
+      showButton={validEntry}
     >
       <div className="flex-1">
         <InputContainer
@@ -38,7 +39,7 @@ export default function NamePage({
           errorHandler={loginForm.nameErrorHandler}
           inputType="text"
           inputText={userName}
-          updateValidEntry={toggleValidEntry}
+          entryHandler={entryHandler}
         />
       </div>
     </LoginPageLayout>

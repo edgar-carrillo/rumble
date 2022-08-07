@@ -9,7 +9,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 
 // Assets
 import imgSrc from '../public/images/people-at-restaurant.jpg';
-import users from '../scripts/models/users';
+import MongoDatabase from '../scripts/classes/MongoDatabase';
 
 // Components
 import LoadingPage from '../components/loading';
@@ -27,19 +27,25 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (user) {
-      users.getSingleUser(user.email)
+      const database = new MongoDatabase();
+      database.getUser(user.email || '')
         .then((response: any) => {
           if (response.status === 200) router.push('/home');
         })
         .catch((err) => {
-          if (err.status === 404) router.push('/login-form');
+          if (err.response.status === 404) router.push('/login-form');
         });
     }
   }, [user, router]);
 
   if (loading) {
     return (
-      <LoadingPage />
+      <LoadingPage
+        title="Verifying Credentials"
+        description="Checking our servers for your data."
+        isVisible
+        centerText
+      />
     )
   } else {
     return (
