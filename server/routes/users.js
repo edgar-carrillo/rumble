@@ -3,10 +3,10 @@ const router = require('express').Router();
 const User = require('../schemas/User');
 
 router.get('/', async (req, res) => {
-  const email = req.query.user_email;
   await dbConnect();
 
-  const users = await User.find({ user_email: email}).exec();
+  const { email } = req.query;
+  const users = await User.find({ email: email}).exec();
 
   if (users.length === 0) {
     res.status(404).send('User not found in database.')
