@@ -39,4 +39,42 @@ router.post('/', (req, res) => {
     .catch((error) => res.status(400).send(error));
 });
 
+router.post('/likedRestaurants', (req, res) => {
+  const { restaurantId, userEmail } = req.body;
+  dbConnect()
+    .then(() => {
+      return User.findOne({ email: userEmail }).exec();
+    })
+    .then((user) => {
+      if (!user.liked_restaurants.includes(restaurantId)) {
+        user.liked_restaurants.push(restaurantId);
+      }
+
+      return user.save();
+    })
+    .then((response) => {
+      res.status(200).send(response);
+    })
+    .catch((error) => res.status(404).send(error));
+});
+
+router.post('/dislikedRestaurants', (req, res) => {
+  const { restaurantId, userEmail } = req.body;
+  dbConnect()
+    .then(() => {
+      return User.findOne({ email: userEmail }).exec();
+    })
+    .then((user) => {
+      if (!user.disliked_restaurants.includes(restaurantId)) {
+        user.disliked_restaurants.push(restaurantId);
+      }
+
+      return user.save();
+    })
+    .then((response) => {
+      res.status(200).send(response);
+    })
+    .catch((error) => res.status(404).send(error));
+});
+
 module.exports = router;
