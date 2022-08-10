@@ -15,6 +15,19 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.get('/swipedRestaurants', async (req, res) => {
+  await dbConnect();
+
+  try {
+    const response = await User.aggregate([{
+      $project: { swiped: { $concatArrays: ['$disliked_restaurants', '$liked_restaurants'] }}
+    }]);
+    res.status(200).send(response[0].swiped);
+  } catch(error) {
+    res.status(404).send(error);
+  }
+});
+
 router.post('/', (req, res) => {
   const { userData } = req.body
 
