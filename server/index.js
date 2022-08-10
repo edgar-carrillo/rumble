@@ -9,6 +9,7 @@ nextApp.prepare().then(() => {
   const app = express();
   const userRoutes = require('./routes/users');
   const photoRoutes = require('./routes/photoRoutes');
+  const restaurauntsRoutes = require('./routes/restaurants');
 
   // Register Routes with custom body constraints
   app.use('/photos', photoRoutes);
@@ -18,6 +19,7 @@ nextApp.prepare().then(() => {
 
   // Register Routes
   app.use('/users', userRoutes);
+  app.use('/restaurants', restaurauntsRoutes);
 
   app.all('*', (req, res) => {
     return handle(req, res)
