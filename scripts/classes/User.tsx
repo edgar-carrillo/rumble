@@ -24,13 +24,7 @@ class User {
   }
 
   getData() {
-    return {
-      username: this.username,
-      email: this.email,
-      location: this.location,
-      cuisine: this.cuisine,
-      photoURL: this.photoURL,
-    };
+    return this;
   }
 
   updateWithCloudinaryPhoto() {
