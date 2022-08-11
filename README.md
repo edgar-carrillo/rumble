@@ -45,20 +45,15 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 | --- | --- |
 | [Node](https://nodejs.org/en/) | JavaScript Runtime Environment |
 | [Express](https://expressjs.com/) | Back End Web Application Framework |
-| [AWS](https://aws.amazon.com/) | Cloud-Computing Platform (EC2) |
 | [MongoDB](https://www.mongodb.com/) | Non-Relational database |
-| [Google Maps API](https://developers.google.com/maps) | In-app map features |
-| [Google Calendars API](https://developers.google.com/calendar/api) | In-app calendar/events features |
 | [Firebase](https://firebase.google.com/) | Google Authentication |
 | [Next.js](https://nextjs.org/) | Web Development Framework |
 | [React](https://reactjs.org/) | Front-End UI Library |
-| [Material UI](https://mui.com/) | Front-End UI Library |
+| [Tailwind](https://tailwindcss.com/) | CSS Framework |
 | [ESLint](https://eslint.org/) | Code Quality |
-| [Excalidraw](https://www.figma.com/) | Concept desiging |
+| [Excalidraw](https://www.figma.com/) | Wireframe desiging |
 | [Figma](https://www.figma.com/) | Concept desiging |
 | [Cloudinary](https://cloudinary.com/) | Image hosting for user profile image uploads |
-
-
 
 ## Motivation and Story
 I wanted to create a full-stack application that I was proud of where I can showcase the breath of my full-stack knowledge while also being passionate about the project. After working with a client on Rumble before I wasn't satisifed although the client was! So I set off to create the Rumble we can see here. Being a fully responsive website with a mobile first approach, Rumble is the tinder for food! Say goodbye to the "I don't know what to eat" conversations and check out rumble! 
