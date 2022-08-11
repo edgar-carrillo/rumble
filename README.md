@@ -37,6 +37,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
   <li>User profiles</li>
   <li>Mobile-focused</li>
   <li>Custom user creation</li>
+  <li>Filter Restaurants by cuisine, price, location</li>
 </ul>
 
 <h2>Technologies Used</h2>
