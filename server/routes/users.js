@@ -82,23 +82,22 @@ router.post('/:user_email/restaurants/liked/:restaurant_id', async (req, res) =>
   res.status(200).send(`Restaurant with id: ${restaurant_id} posted to liked restaurants!`);
 });
 
-router.post('/dislikedRestaurants', (req, res) => {
-  const { restaurantId, userEmail } = req.body;
-  dbConnect()
-    .then(() => {
-      return User.findOne({ email: userEmail }).exec();
-    })
-    .then((user) => {
-      if (!user.disliked_restaurants.includes(restaurantId)) {
-        user.disliked_restaurants.push(restaurantId);
-      }
+router.post('/:user_email/restaurants/disliked/:restaurant_id', async (req, res) => {
+  await dbConnect();
 
-      return user.save();
-    })
-    .then((response) => {
-      res.status(200).send(response);
-    })
-    .catch((error) => res.status(404).send(error));
+  const { user_email, restaurant_id } = req.params;
+  const user = await models.users.getUser(user_email);
+
+  const hasDislikedRestaurant = () => {
+    return user.disliked_restaurants.includes(restaurant_id);
+  };
+
+  if (!hasDislikedRestaurant()) {
+    user.disliked_restaurants.push(restaurant_id);
+  }
+
+  await user.save();
+  res.status(200).send(`Restaurant with id: ${restaurant_id} added to disliked restaurants!`);
 });
 
 router.delete('/dislikedRestaurant', async (req, res) => {
