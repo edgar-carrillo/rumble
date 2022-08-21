@@ -3,7 +3,7 @@ import Image from 'next/image';
 import restaurantsIcon from '../../public/images/restaurants-icon.svg';
 
 interface RestaurantsBtnProps {
-  readonly clickHandler: () => {};
+  readonly clickHandler: () => void;
 };
 
 export default function RestaurantsBtn({ clickHandler }: RestaurantsBtnProps) {
