@@ -29,6 +29,17 @@ router.get('/swipedRestaurants', async (req, res) => {
   }
 });
 
+router.post('/:user_email/restaurants/favorites/:restaurant_id', async (req, res) => {
+  await dbConnect();
+
+  const { user_email, restaurant_id } = req.params;
+  const user = await models.users.getUser(user_email);
+  user.favorite_restaurants.push(restaurant_id);
+  await user.save();
+
+  res.status(200).send(`Restaurant with id: ${restaurant_id} has been added to favorites!`);
+});
+
 router.post('/', (req, res) => {
   const { userData } = req.body
 
