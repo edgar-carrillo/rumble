@@ -1,6 +1,7 @@
 const dbConnect = require('../dbConnect');
 const router = require('express').Router();
 const User = require('../schemas/User');
+const models = require('../scripts/models/models');
 
 router.get('/', async (req, res) => {
   await dbConnect();
@@ -52,23 +53,22 @@ router.post('/', (req, res) => {
     .catch((error) => res.status(400).send(error));
 });
 
-router.post('/likedRestaurants', (req, res) => {
-  const { restaurantId, userEmail } = req.body;
-  dbConnect()
-    .then(() => {
-      return User.findOne({ email: userEmail }).exec();
-    })
-    .then((user) => {
-      if (!user.liked_restaurants.includes(restaurantId)) {
-        user.liked_restaurants.push(restaurantId);
-      }
+router.post('/:user_email/restaurants/liked/:restaurant_id', async (req, res) => {
+  await dbConnect();
 
-      return user.save();
-    })
-    .then((response) => {
-      res.status(200).send(response);
-    })
-    .catch((error) => res.status(404).send(error));
+  const { user_email, restaurant_id } = req.params;
+  const user = await models.users.getUser(user_email);
+
+  const hasLikedRestaurant = () => {
+    return user.liked_restaurants.includes(restaurant_id);
+  };
+
+  if (!hasLikedRestaurant()) {
+    user.liked_restaurants.push(restaurant_id);
+  }
+
+  await user.save();
+  res.status(200).send(`Restaurant with id: ${restaurant_id} posted to liked restaurants!`);
 });
 
 router.post('/dislikedRestaurants', (req, res) => {
