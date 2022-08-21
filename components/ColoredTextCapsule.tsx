@@ -1,14 +1,14 @@
 interface ColoredTextCapsuleProps {
-  readonly colorName: String;
+  readonly bgColor: String;
   readonly text: string;
 };
 
 export default function ColoredTextCapsule({
-  colorName, text
+  bgColor, text
 }: ColoredTextCapsuleProps) {
   return (
     <div>
-      <div className={`rounded-2xl bg-${colorName} px-2.5`}>
+      <div className={`rounded-2xl ${bgColor} px-2.5`}>
         <p className="font-regular">{text}</p>
       </div>
     </div>
