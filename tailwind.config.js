@@ -5,12 +5,14 @@ module.exports = {
   ],
   theme: {
     extend: {
+
       colors: {
         'sunset-orange': '#FF6161',
         'limed-spruce': '#37474F',
         'dark-jungle-green': '#1F2427',
         'white': '#FFFFFF',
         'light-white': 'rgba(255, 255, 255, .5)',
+        'light-black': 'rgba(0, 0, 0, .5)',
         'star-dust': '#A59E9E',
         'star-dust-dark': '#9D9D9D',
         'reef-gold': '#A48111',
@@ -21,6 +23,7 @@ module.exports = {
         'amber': '#ffbf00',
         'dark-red': '#58181F',
       },
+
       fontFamily: {
         'regular': ['Roboto-Regular'],
         'bold': ['Roboto-Bold'],
@@ -28,6 +31,11 @@ module.exports = {
         'light': ['Roboto-Light'],
         'logo': ['Bebas-Neue'],
       },
+
+      gridTemplateRows: {
+        'home-layout': '6rem 1fr 6rem',
+      },
+
     },
   },
   plugins: [],
