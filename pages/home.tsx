@@ -16,7 +16,7 @@ import HomeHeader from "../components/home/HomeHeader";
 import HomeFooter from '../components/home/HomeFooter';
 import RestaurantCard from '../components/home/restaurantCard/RestaurauntCard';
 import LoadingPage from '../components/loading';
-import Card from '../components/home/card/Card';
+import Card from '../components/Card';
 
 export default function HomePage() {
   const router = useRouter();
