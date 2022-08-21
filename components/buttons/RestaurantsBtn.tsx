@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import restaurantsIcon from '../../public/images/restaurants-icon.svg';
+import restaurantsIcon from '../../public/images/fork-and-knife-icon.svg';
 
 interface RestaurantsBtnProps {
   readonly clickHandler: () => void;
