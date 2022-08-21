@@ -3,7 +3,7 @@ import Image from 'next/image';
 import xMarkIcon from '../../public/images/x-mark-icon.svg';
 
 interface DislikeBtnProps {
-  readonly clickHandler: () => {};
+  readonly clickHandler: () => void;
 };
 
 export default function DislikeBtn({ clickHandler }: DislikeBtnProps) {
