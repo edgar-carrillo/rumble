@@ -3,7 +3,7 @@ import Image from 'next/image';
 import settingsIcon from '../../public/images/settings-icon.svg';
 
 interface SettingsBtnProps {
-  readonly clickHandler: () => {};
+  readonly clickHandler: () => void;
 };
 
 export default function SettingsBtn({ clickHandler }: SettingsBtnProps) {
