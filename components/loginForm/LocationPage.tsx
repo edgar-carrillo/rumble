@@ -18,7 +18,7 @@ interface LocationPageProps {
 export default function LocationPage({
   isVisible, goPrevPage, goNextPage, userLocation,
 }: LocationPageProps) {
-  const [isValidEntry, setValidEntry] = useState(false);
+  const [isValidEntry, setIsValidEntry] = useState(false);
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState('');
 
@@ -57,7 +57,7 @@ export default function LocationPage({
     getLocations(text, isValid)
       .then((response) => {
         valid = Boolean(response);
-        setValidEntry(valid);
+        setIsValidEntry(valid);
       })
       .catch((response) => {
         console.error('There was an error in retrieving locations: ', response);
