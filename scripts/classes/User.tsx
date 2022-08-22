@@ -48,6 +48,14 @@ class User {
       });
   }
 
+  addDislikedRestaurant(restaurantId: string) {
+    return new Promise((resolve, reject) => {
+      axios.post(`users/${this.email}/restaurants/disliked/${restaurantId}`)
+        .then((response) => resolve(response))
+        .catch((error) => reject(error));
+      });
+  }
+
 }
 
 export default User;
