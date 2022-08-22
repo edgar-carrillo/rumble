@@ -88,6 +88,10 @@ class User {
     await axios.post(endpoint, body);
   }
 
+  async removeFavoriteRestaurant(restaurantId: string) {
+    await axios.delete(`users/${this.email}/restaurants/favorites/${restaurantId}`);
+  }
+
 }
 
 export default User;
