@@ -24,9 +24,14 @@ router.get('/:user_email/restaurants/unswiped/:cuisine/:location', async (req, r
   const yelpRestaurants = await models.restaurants.getYelpRestaurants(location, cuisine);
   const swipedRestaurants = await models.users.getSwipedRestaurants(user_email);
 
-  const unswipedRestaurants = yelpRestaurants.filter((restaurant) => {
-    return !swipedRestaurants.includes(restaurant.id);
-  });
+  const getUnswipedRestaurnants = () => {
+    return yelpRestaurants.filter((restaurant) => {
+      return !swipedRestaurants.includes(restaurant.id);
+    });
+  };
+
+  let unswipedRestaurants = getUnswipedRestaurnants();
+  unswipedRestaurants = await models.users.createFormattedRestaurants(unswipedRestaurants, user_email);
 
   res.status(200).send(unswipedRestaurants);
 });
