@@ -18,52 +18,36 @@ interface LocationPageProps {
 export default function LocationPage({
   isVisible, goPrevPage, goNextPage, userLocation,
 }: LocationPageProps) {
-  const [isValidEntry, setIsValidEntry] = useState(false);
-  const [locations, setLocations] = useState([]);
-  const [selectedLocation, setSelectedLocation] = useState(userLocation || '');
+  const [isValidEntry, setIsValidEntry] = useState<boolean>(false);
+  const [locations, setLocations] = useState<string[]>([]);
+  const [selectedLocation, setSelectedLocation] = useState<string>(userLocation || '');
 
   const formatLocations = (items: any) => {
     return items.map((item: any) => {
-      return models.loginForm.formatLocationName(item);
+      return models.loginForm.shortenLocationName(item);
     });
   };
 
-  const getLocations = useCallback((location: string, isValid: Boolean) => new Promise((resolve, reject) => {
-    if (isValid) {
-      models.loginForm.getLocations(location)
-        .then((response: any) => {
-          let formattedLocations = response.map((location: any) => {
-            return location['matching_full_name'];
-          });
-
-          if (formattedLocations.length) resolve(true);
-          else resolve(false);
-
-          setLocations(formattedLocations);
-        })
-        .catch((err) => {
-          setLocations([]);
-          reject(err);
-        })
-    } else {
-      setLocations([]);
-      resolve(false);
-    }
-  }), []);
-
-  const entryHandler = useCallback((isValid: Boolean, text: string) => {
-    let valid = isValidEntry;
-
-    getLocations(text, isValid)
-      .then((response) => {
-        valid = Boolean(response);
-        setIsValidEntry(valid);
+  const updateLocations = (locationName: string) => {
+    models.loginForm.getLocations(locationName)
+      .then((locationNames: any) => {
+        setLocations(locationNames);
       })
-      .catch((response) => {
-        console.error('There was an error in retrieving locations: ', response);
+      .catch((error) => {
+        console.error(`There was an error in retrieving locations: ${error}`);
       });
+  }
 
-  }, [isValidEntry, getLocations]);
+  const entryHandler = useCallback((isValid: boolean, text: string) => {
+    setIsValidEntry(isValid);
+
+    if (!isValid) {
+      setLocations([]);
+      return;
+    };
+
+    updateLocations(text);
+  }, []);
 
   const updateSelectedLocation = useCallback((index: number) => {
     if (index === -1) {
