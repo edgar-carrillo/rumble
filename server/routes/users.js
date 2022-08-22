@@ -24,9 +24,14 @@ router.get('/:user_email/restaurants/unswiped/:cuisine/:location', async (req, r
   const yelpRestaurants = await models.restaurants.getYelpRestaurants(location, cuisine);
   const swipedRestaurants = await models.users.getSwipedRestaurants(user_email);
 
-  const unswipedRestaurants = yelpRestaurants.filter((restaurant) => {
-    return !swipedRestaurants.includes(restaurant.id);
-  });
+  const getUnswipedRestaurnants = () => {
+    return yelpRestaurants.filter((restaurant) => {
+      return !swipedRestaurants.includes(restaurant.id);
+    });
+  };
+
+  let unswipedRestaurants = getUnswipedRestaurnants();
+  unswipedRestaurants = await models.users.createFormattedRestaurants(unswipedRestaurants, user_email);
 
   res.status(200).send(unswipedRestaurants);
 });
@@ -121,6 +126,17 @@ router.delete('/:user_email/restaurants/liked/:restaurant_id', async (req, res) 
   try {
     await User.updateOne({ email: user_email }, { $pull: { liked_restaurants: restaurant_id } });
     res.status(200).send(`Removed ${restaurant_id} from liked restaurants successfully.`);
+  } catch (error) {
+    res.status(404).send(error);
+  }
+});
+
+router.delete('/:user_email/restaurants/favorites/:restaurant_id', async (req, res) => {
+  const { user_email, restaurant_id } = req.params;
+
+  try {
+    await User.updateOne({ email: user_email }, { $pull: { favorite_restaurants: restaurant_id } });
+    res.status(200).send(`Removed ${restaurant_id} from favorite restaurants successfully.`);
   } catch (error) {
     res.status(404).send(error);
   }

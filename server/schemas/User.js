@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
     price: String,
     cuisine: String,
   },
-  favorite_restauraunts: [String],
+  favorite_restaurants: [String],
   liked_restaurants: [String],
   disliked_restaurants: [String],
   swipe_groups: [String],

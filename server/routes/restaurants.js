@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 
-router.get('/', (req, res) => {
-  const { location, cuisine } = req.query;
+router.get('/:location/:cuisine', (req, res) => {
+  const { location, cuisine } = req.params;
   const url = `https://api.yelp.com/v3/businesses/search?location=${location}&categories=${cuisine}`;
   axios.get(url, {
     headers: {
