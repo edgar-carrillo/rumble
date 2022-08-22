@@ -79,10 +79,6 @@ export default function LocationPage({
     if (!locations.length) updateSelectedLocation(-1);
   }, [locations, updateSelectedLocation]);
 
-  useEffect(() => {
-    if (userLocation && locations) updateSelectedLocation(0);
-  }, [userLocation, locations, updateSelectedLocation]);
-
   return (
     <LoginPageLayout
       isVisible={isVisible}
