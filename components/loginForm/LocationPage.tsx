@@ -36,7 +36,7 @@ export default function LocationPage({
       .catch((error) => {
         console.error(`There was an error in retrieving locations: ${error}`);
       });
-  }
+  };
 
   const entryHandler = useCallback((isValid: boolean, text: string) => {
     setIsValidEntry(isValid);
