@@ -21,7 +21,7 @@ class MongoDatabase {
   getUser(email: string) {
     return new Promise((resolve, reject) => {
       axios.get(`users/?email=${email}`)
-        .then((response: any) => resolve(response))
+        .then((response: any) => resolve(response.data))
         .catch((error) => reject(error));
     });
   }
