@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 
 // Assets
-import loginFormModels from '../../scripts/models/loginForm';
+import models from '../../scripts/models/models';
 
 // Components
 import LoginPageLayout from './LoginPageLayout';
@@ -24,13 +24,13 @@ export default function LocationPage({
 
   const formatLocations = (items: any) => {
     return items.map((item: any) => {
-      return loginFormModels.formatLocationName(item);
+      return models.loginForm.formatLocationName(item);
     });
   };
 
   const getLocations = useCallback((location: string, isValid: Boolean) => new Promise((resolve, reject) => {
     if (isValid) {
-      loginFormModels.getLocations(location)
+      models.loginForm.getLocations(location)
         .then((response: any) => {
           let formattedLocations = response.map((location: any) => {
             return location['matching_full_name'];
@@ -68,7 +68,7 @@ export default function LocationPage({
   const locationHandler = useCallback((index: number) => {
     if (locations.length) {
       setSelectedLocation(locations[index]);
-      loginFormModels.updateLocation(locations[index]);
+      models.loginForm.updateLocation(locations[index]);
     }
   }, [locations]);
 
@@ -92,7 +92,7 @@ export default function LocationPage({
       <div className="flex-1">
         <InputContainer
           labelText="Location"
-          errorHandler={loginFormModels.locationErrorHandler}
+          errorHandler={models.loginForm.locationErrorHandler}
           inputType="search"
           entryHandler={entryHandler}
           inputText={userLocation}
