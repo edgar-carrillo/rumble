@@ -1,3 +1,4 @@
+import axios from 'axios';
 import loginFormModel from '../models/loginForm';
 
 interface UserProps {
@@ -37,6 +38,14 @@ class User {
       })
       .catch((error) => reject(error));
     });
+  }
+
+  addLikedRestaurant(restaurantId: string) {
+    return new Promise((resolve, reject) => {
+      axios.post(`users/${this.email}/restaurants/liked/${restaurantId}`)
+        .then((response) => resolve(response))
+        .catch((error) => reject(error));
+      });
   }
 
 }
