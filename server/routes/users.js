@@ -131,7 +131,7 @@ router.delete('/:user_email/restaurants/favorites/:restaurant_id', async (req, r
 
   try {
     await User.updateOne({ email: user_email }, { $pull: { favorite_restaurants: restaurant_id } });
-    res.status(200).send(`Removed ${restaurant_id} from liked restaurants successfully.`);
+    res.status(200).send(`Removed ${restaurant_id} from favorite restaurants successfully.`);
   } catch (error) {
     res.status(404).send(error);
   }
