@@ -20,7 +20,7 @@ export default function LocationPage({
 }: LocationPageProps) {
   const [isValidEntry, setIsValidEntry] = useState(false);
   const [locations, setLocations] = useState([]);
-  const [selectedLocation, setSelectedLocation] = useState('');
+  const [selectedLocation, setSelectedLocation] = useState(userLocation || '');
 
   const formatLocations = (items: any) => {
     return items.map((item: any) => {
@@ -65,20 +65,23 @@ export default function LocationPage({
 
   }, [isValidEntry, getLocations]);
 
-  const locationHandler = useCallback((index: number) => {
-    if (locations.length) {
+  const updateSelectedLocation = useCallback((index: number) => {
+    if (index === -1) {
+      setSelectedLocation('');
+      models.loginForm.updateLocation('');
+    } else {
       setSelectedLocation(locations[index]);
       models.loginForm.updateLocation(locations[index]);
     }
   }, [locations]);
 
   useEffect(() => {
-    if (!locations.length) setSelectedLocation('');
-  }, [locations]);
+    if (!locations.length) updateSelectedLocation(-1);
+  }, [locations, updateSelectedLocation]);
 
   useEffect(() => {
-    if (userLocation && locations) locationHandler(0)
-  }, [userLocation, locations, locationHandler])
+    if (userLocation && locations) updateSelectedLocation(0);
+  }, [userLocation, locations, updateSelectedLocation]);
 
   return (
     <LoginPageLayout
@@ -99,7 +102,7 @@ export default function LocationPage({
         />
         <SelectionContainer
           items={formatLocations(locations)}
-          selectionHandler={locationHandler}
+          selectionHandler={updateSelectedLocation}
         />
       </div>
     </LoginPageLayout>
