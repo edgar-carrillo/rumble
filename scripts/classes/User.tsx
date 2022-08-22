@@ -45,7 +45,7 @@ class User {
       axios.post(`users/${this.email}/restaurants/liked/${restaurantId}`)
         .then((response) => resolve(response))
         .catch((error) => reject(error));
-      });
+    });
   }
 
   addDislikedRestaurant(restaurantId: string) {
@@ -53,7 +53,7 @@ class User {
       axios.post(`users/${this.email}/restaurants/disliked/${restaurantId}`)
         .then((response) => resolve(response))
         .catch((error) => reject(error));
-      });
+    });
   }
 
   removeDislikedRestaurant(restaurantId: string) {
@@ -61,7 +61,7 @@ class User {
       axios.delete(`users/${this.email}/restaurants/disliked/${restaurantId}`)
         .then((response) => resolve(response))
         .catch((error) => reject(error));
-      });
+    });
   }
 
 }
