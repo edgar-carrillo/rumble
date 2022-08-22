@@ -29,6 +29,21 @@ router.get('/swipedRestaurants', async (req, res) => {
   }
 });
 
+router.get('/:user_email/restaurants/unswiped/:cuisine/:location', async (req, res) => {
+  await dbConnect();
+
+  const { user_email, cuisine, location } = req.params;
+
+  const yelpRestaurants = await models.restaurants.getYelpRestaurants(location, cuisine);
+  const swipedRestaurants = await models.users.getSwipedRestaurants(user_email);
+
+  const unswipedRestaurants = yelpRestaurants.filter((restaurant) => {
+    return !swipedRestaurants.includes(restaurant.id);
+  });
+
+  res.status(200).send(unswipedRestaurants);
+});
+
 router.post('/:user_email/restaurants/favorites/:restaurant_id', async (req, res) => {
   await dbConnect();
 
