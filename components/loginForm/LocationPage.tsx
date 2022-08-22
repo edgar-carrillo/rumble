@@ -59,8 +59,10 @@ export default function LocationPage({
   }, [locations]);
 
   useEffect(() => {
-    if (!locations.length) updateSelectedLocation(-1);
-  }, [locations, updateSelectedLocation]);
+    if (!isValidEntry) updateSelectedLocation(-1);
+  }, [isValidEntry, updateSelectedLocation]);
+
+  console.log(locations)
 
   return (
     <LoginPageLayout
