@@ -18,7 +18,7 @@ interface LocationPageProps {
 export default function LocationPage({
   isVisible, goPrevPage, goNextPage, userLocation,
 }: LocationPageProps) {
-  const [validEntry, setValidEntry] = useState(false);
+  const [isValidEntry, setValidEntry] = useState(false);
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState('');
 
@@ -52,7 +52,7 @@ export default function LocationPage({
   }), []);
 
   const entryHandler = useCallback((isValid: Boolean, text: string) => {
-    let valid = validEntry;
+    let valid = isValidEntry;
 
     getLocations(text, isValid)
       .then((response) => {
@@ -63,7 +63,7 @@ export default function LocationPage({
         console.error('There was an error in retrieving locations: ', response);
       });
 
-  }, [validEntry, getLocations]);
+  }, [isValidEntry, getLocations]);
 
   const locationHandler = useCallback((index: number) => {
     if (locations.length) {
@@ -87,7 +87,7 @@ export default function LocationPage({
       goNextPage={goNextPage}
       title="Choose location"
       description="This tailors what restaurants we'll show you on Rumble."
-      showButton={validEntry && selectedLocation.length > 0}
+      showButton={isValidEntry && selectedLocation.length > 0}
     >
       <div className="flex-1">
         <InputContainer
