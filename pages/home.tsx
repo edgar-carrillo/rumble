@@ -83,9 +83,9 @@ export default function HomePage() {
     updateCurrentIndex(newIndex);
 
     if (lastDirection === 'left') {
-      await user.removeFromDislikedRestaurants(lastRestaurantId);
+      await user.removeDislikedRestaurant(lastRestaurantId);
     } else {
-      await user.removeFromLikedRestaurants(lastRestaurantId);
+      await user.removeLikedRestaurant(lastRestaurantId);
     }
 
     const { current }: any = childRefs[newIndex];
