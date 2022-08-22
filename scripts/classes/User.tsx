@@ -82,6 +82,12 @@ class User {
     });
   }
 
+  async addFavoriteRestaurant(restaurantId: string) {
+    const endpoint = `users/${this.email}/restaurants/favorites/${restaurantId}`;
+    const body = { user_email: this.email, restaurant_id: restaurantId };
+    await axios.post(endpoint, body);
+  }
+
 }
 
 export default User;
