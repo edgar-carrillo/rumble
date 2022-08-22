@@ -62,8 +62,6 @@ export default function LocationPage({
     if (!isValidEntry) updateSelectedLocation(-1);
   }, [isValidEntry, updateSelectedLocation]);
 
-  console.log(locations)
-
   return (
     <LoginPageLayout
       isVisible={isVisible}
