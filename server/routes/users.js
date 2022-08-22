@@ -126,4 +126,15 @@ router.delete('/:user_email/restaurants/liked/:restaurant_id', async (req, res) 
   }
 });
 
+router.delete('/:user_email/restaurants/favorites/:restaurant_id', async (req, res) => {
+  const { user_email, restaurant_id } = req.params;
+
+  try {
+    await User.updateOne({ email: user_email }, { $pull: { favorite_restaurants: restaurant_id } });
+    res.status(200).send(`Removed ${restaurant_id} from liked restaurants successfully.`);
+  } catch (error) {
+    res.status(404).send(error);
+  }
+});
+
 module.exports = router;
