@@ -72,6 +72,16 @@ class User {
     });
   }
 
+  getUnswipedRestaurants() {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        `users/${this.email}/restaurants/unswiped/${this.cuisine}/${this.location}`;
+      axios.get(endpoint)
+        .then((response) => resolve(response.data))
+        .catch((error) => reject(error));
+    });
+  }
+
 }
 
 export default User;
