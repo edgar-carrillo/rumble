@@ -43,10 +43,9 @@ export default function LocationPage({
 
     if (!isValid) {
       setLocations([]);
-      return;
-    };
-
-    updateLocations(text);
+    } else {
+      updateLocations(text);
+    }
   }, []);
 
   const updateSelectedLocation = useCallback((index: number) => {
