@@ -64,6 +64,14 @@ class User {
     });
   }
 
+  removeLikedRestaurant(restaurantId: string) {
+    return new Promise((resolve, reject) => {
+      axios.delete(`users/${this.email}/restaurants/liked/${restaurantId}`)
+        .then((response) => resolve(response))
+        .catch((error) => reject(error));
+    });
+  }
+
 }
 
 export default User;
