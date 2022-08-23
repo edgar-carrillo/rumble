@@ -94,7 +94,7 @@ export default function LoginForm() {
             goNextPage={() => {
               setCurrPage('loading-page');
               createUser()
-                .then(() => {/* Go to swipe page */})
+                .then(() => router.push('/home'))
                 .catch((error) => {
                   console.error(error);
                   setCurrPage('error-page');
