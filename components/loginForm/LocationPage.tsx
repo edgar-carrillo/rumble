@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 
 // Assets
 import models from '../../scripts/models/models';
@@ -9,7 +9,7 @@ import InputContainer from './input/InputContainer';
 import SelectionContainer from './selection/SelectionContainer';
 
 interface LocationPageProps {
-  readonly isVisible: Boolean;
+  readonly isVisible: boolean;
   readonly goPrevPage: () => void;
   readonly goNextPage: () => void;
   readonly userLocation?: string;
@@ -18,49 +18,54 @@ interface LocationPageProps {
 export default function LocationPage({
   isVisible, goPrevPage, goNextPage, userLocation,
 }: LocationPageProps) {
-  const [isValidEntry, setIsValidEntry] = useState<boolean>(false);
-  const [locations, setLocations] = useState<string[]>([]);
+  const [isValidEntry, setIsValidEntry] = useState<boolean>(userLocation ? true : true);
+  const [locations, setLocations] = useState<string[] | []>([]);
   const [selectedLocation, setSelectedLocation] = useState<string>(userLocation || '');
+  const [selectedLocationIndex, setSelectedLocationIndex] = useState<number>(userLocation ? 0 : -1);
+  const [userInput, setUserInput] = useState<string>('');
 
-  const formatLocations = (items: any) => {
-    return items.map((item: any) => {
+  const formatLocations = (items: string[]) => {
+    return items.map((item: string) => {
       return models.loginForm.shortenLocationName(item);
     });
   };
 
-  const updateLocations = (locationName: string) => {
-    models.loginForm.getLocations(locationName)
-      .then((locationNames: any) => {
-        setLocations(locationNames);
-      })
-      .catch((error) => {
-        console.error(`There was an error in retrieving locations: ${error}`);
-      });
-  };
-
-  const entryHandler = useCallback((isValid: boolean, text: string) => {
-    setIsValidEntry(isValid);
-
-    if (!isValid) {
-      setLocations([]);
-    } else {
-      updateLocations(text);
-    }
-  }, []);
-
-  const updateSelectedLocation = useCallback((index: number) => {
+  const updateSelectedLocation = (index: number) => {
     if (index === -1) {
       setSelectedLocation('');
+      setSelectedLocationIndex(-1);
       models.loginForm.updateLocation('');
     } else {
       setSelectedLocation(locations[index]);
+      setSelectedLocationIndex(index);
       models.loginForm.updateLocation(locations[index]);
     }
-  }, [locations]);
+  }
+
+  const entryHandler = (isValid: boolean, text: string) => {
+    setIsValidEntry(isValid);
+
+    if (!isValid && locations.length > 0) {
+      setLocations([]);
+      updateSelectedLocation(-1);
+      setUserInput('');
+    } else if (isValid) {
+      setUserInput(text);
+    }
+  };
 
   useEffect(() => {
-    if (!isValidEntry) updateSelectedLocation(-1);
-  }, [isValidEntry, updateSelectedLocation]);
+    const updateLocations = async (locationName: string) => {
+      const locationNames: any = await models.loginForm.getLocations(locationName);
+      setLocations(locationNames);
+    };
+
+    if (userInput.length) {
+      (async function() {
+        await updateLocations(userInput);
+      })();
+    }
+  }, [userInput]);
 
   return (
     <LoginPageLayout
@@ -79,10 +84,15 @@ export default function LocationPage({
           entryHandler={entryHandler}
           inputText={userLocation}
         />
-        <SelectionContainer
-          items={formatLocations(locations)}
-          selectionHandler={updateSelectedLocation}
-        />
+        { locations.length === 0 ?
+          <>
+          </> :
+          <SelectionContainer
+            items={formatLocations(locations)}
+            selectionHandler={updateSelectedLocation}
+            defaultSelected={selectedLocationIndex}
+          />
+        }
       </div>
     </LoginPageLayout>
   );
