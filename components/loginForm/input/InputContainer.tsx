@@ -11,7 +11,7 @@ interface InputContainerProps {
   readonly inputType: string;
   readonly errorHandler: Function;
   readonly inputText?: string;
-  readonly entryHandler: (arg0: Boolean, arg1: string) => void;
+  readonly entryHandler: (arg0: boolean, arg1: string) => void;
 };
 
 export default function InputContainer({
@@ -21,9 +21,9 @@ export default function InputContainer({
   inputText,
   entryHandler,
 }: InputContainerProps) {
-  const [userInput, setUserInput] = useState('');
+  const [userInput, setUserInput] = useState(inputText || '');
   const [isActive, setIsActive] = useState(false);
-  const [isValid, setIsValid] = useState(false);
+  const [isValid, setIsValid] = useState(inputText ? true : false);
   const [errorMsg, setErrorMsg] = useState('');
   const [isDefault, setIsDefault] = useState(false);
 
@@ -66,6 +66,8 @@ export default function InputContainer({
       handleValidation(inputText, current.validationMessage);
       current.value = inputText;
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
