@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // Assets
 import cuisines from '../../assets/cuisines';
@@ -20,10 +20,13 @@ export default function CuisinePage({
 }: CuisinePageProps) {
   const [cuisine, setCuisine] = useState(userCuisine || '');
 
-  const cuisineHandler = (index: number) => {
+  const updateCuisine = (index: number) => {
     setCuisine(cuisines[index]);
-    loginFormModel.updateCuisine(cuisines[index]);
   };
+
+  useEffect(() => {
+    loginFormModel.updateCuisine(cuisine);
+  }, [cuisine]);
 
   return (
     <LoginPageLayout
@@ -34,10 +37,17 @@ export default function CuisinePage({
       description="You choose the cuisine, we'll show you the relevant restaurants!"
       showButton={Boolean(cuisine.length)}
     >
-      <div className="flex-1 my-8">
+      <div className="flex-1 my-8 text-white">
+        <p className="pb-6 font-bold">
+          Selected Cuisine:
+          {' '}
+          <span className={`${cuisine ? 'text-amber' : 'text-sunset-orange'} underline`}>
+            {cuisine || 'None'}
+          </span>
+        </p>
         <SelectionContainer
           items={cuisines}
-          selectionHandler={cuisineHandler}
+          selectionHandler={updateCuisine}
           defaultSelected={userCuisine ? cuisines.indexOf(userCuisine) : -1}
         />
       </div>

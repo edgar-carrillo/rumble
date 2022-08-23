@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 
 // Assets
-import loginFormModels from '../../scripts/models/loginForm';
+import models from '../../scripts/models/models';
 
 // Components
 import LoginPageLayout from './LoginPageLayout';
@@ -9,7 +9,7 @@ import InputContainer from './input/InputContainer';
 import SelectionContainer from './selection/SelectionContainer';
 
 interface LocationPageProps {
-  readonly isVisible: Boolean;
+  readonly isVisible: boolean;
   readonly goPrevPage: () => void;
   readonly goNextPage: () => void;
   readonly userLocation?: string;
@@ -18,67 +18,54 @@ interface LocationPageProps {
 export default function LocationPage({
   isVisible, goPrevPage, goNextPage, userLocation,
 }: LocationPageProps) {
-  const [validEntry, setValidEntry] = useState(false);
-  const [locations, setLocations] = useState([]);
-  const [selectedLocation, setSelectedLocation] = useState('');
+  const [isValidEntry, setIsValidEntry] = useState<boolean>(userLocation ? true : true);
+  const [locations, setLocations] = useState<string[] | []>([]);
+  const [selectedLocation, setSelectedLocation] = useState<string>(userLocation || '');
+  const [selectedLocationIndex, setSelectedLocationIndex] = useState<number>(userLocation ? 0 : -1);
+  const [userInput, setUserInput] = useState<string>('');
 
-  const formatLocations = (items: any) => {
-    return items.map((item: any) => {
-      return loginFormModels.formatLocationName(item);
+  const formatLocations = (items: string[]) => {
+    return items.map((item: string) => {
+      return models.loginForm.shortenLocationName(item);
     });
   };
 
-  const getLocations = useCallback((location: string, isValid: Boolean) => new Promise((resolve, reject) => {
-    if (isValid) {
-      loginFormModels.getLocations(location)
-        .then((response: any) => {
-          let formattedLocations = response.map((location: any) => {
-            return location['matching_full_name'];
-          });
-
-          if (formattedLocations.length) resolve(true);
-          else resolve(false);
-
-          setLocations(formattedLocations);
-        })
-        .catch((err) => {
-          setLocations([]);
-          reject(err);
-        })
+  const updateSelectedLocation = (index: number) => {
+    if (index === -1) {
+      setSelectedLocation('');
+      setSelectedLocationIndex(-1);
+      models.loginForm.updateLocation('');
     } else {
-      setLocations([]);
-      resolve(false);
-    }
-  }), []);
-
-  const entryHandler = useCallback((isValid: Boolean, text: string) => {
-    let valid = validEntry;
-
-    getLocations(text, isValid)
-      .then((response) => {
-        valid = Boolean(response);
-        setValidEntry(valid);
-      })
-      .catch((response) => {
-        console.error('There was an error in retrieving locations: ', response);
-      });
-
-  }, [validEntry, getLocations]);
-
-  const locationHandler = useCallback((index: number) => {
-    if (locations.length) {
       setSelectedLocation(locations[index]);
-      loginFormModels.updateLocation(locations[index]);
+      setSelectedLocationIndex(index);
+      models.loginForm.updateLocation(locations[index]);
     }
-  }, [locations]);
+  }
+
+  const entryHandler = (isValid: boolean, text: string) => {
+    setIsValidEntry(isValid);
+
+    if (!isValid && locations.length > 0) {
+      setLocations([]);
+      updateSelectedLocation(-1);
+      setUserInput('');
+    } else if (isValid) {
+      setUserInput(text);
+    }
+  };
 
   useEffect(() => {
-    if (!locations.length) setSelectedLocation('');
-  }, [locations]);
+    const updateLocations = async (locationName: string) => {
+      const locationNames: any = await models.loginForm.getLocations(locationName);
+      setLocations(locationNames);
+    };
 
-  useEffect(() => {
-    if (userLocation && locations) locationHandler(0)
-  }, [userLocation, locations, locationHandler])
+    if (userInput.length) {
+      (async function() {
+        await updateLocations(userInput);
+      })();
+    }
+  }, [userInput]);
 
   return (
     <LoginPageLayout
@@ -87,20 +74,25 @@ export default function LocationPage({
       goNextPage={goNextPage}
       title="Choose location"
       description="This tailors what restaurants we'll show you on Rumble."
-      showButton={validEntry && selectedLocation.length > 0}
+      showButton={isValidEntry && selectedLocation.length > 0}
     >
       <div className="flex-1">
         <InputContainer
           labelText="Location"
-          errorHandler={loginFormModels.locationErrorHandler}
+          errorHandler={models.loginForm.locationErrorHandler}
           inputType="search"
           entryHandler={entryHandler}
           inputText={userLocation}
         />
-        <SelectionContainer
-          items={formatLocations(locations)}
-          selectionHandler={locationHandler}
-        />
+        { locations.length === 0 ?
+          <>
+          </> :
+          <SelectionContainer
+            items={formatLocations(locations)}
+            selectionHandler={updateSelectedLocation}
+            defaultSelected={selectedLocationIndex}
+          />
+        }
       </div>
     </LoginPageLayout>
   );

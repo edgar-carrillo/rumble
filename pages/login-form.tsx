@@ -43,18 +43,21 @@ export default function LoginForm() {
       username: localStorage.getItem('username') || '',
       email: firebaseUser?.email || '',
       location: localStorage.getItem('location') || '',
-      cuisine: localStorage.getItem('cuisine') || '',
+      cuisine: localStorage.getItem('cuisine')?.toLowerCase() || '',
       photoURL: localStorage.getItem('photo') || '',
     });
 
     return new Promise((resolve, reject) => {
       user.updateWithCloudinaryPhoto()
         .then(() => database.createUser(user.getData()))
-        .then(() => resolve({
-          message: 'Added user to database successfully.',
-          statusCode: 200,
-          userData: user.getData(),
-        }))
+        .then(() => {
+          localStorage.clear();
+          resolve({
+            message: 'Added user to database successfully.',
+            statusCode: 200,
+            userData: user.getData(),
+          })
+        })
         .catch((error) => reject(error));
     });
   }
@@ -94,7 +97,7 @@ export default function LoginForm() {
             goNextPage={() => {
               setCurrPage('loading-page');
               createUser()
-                .then(() => {/* Go to swipe page */})
+                .then(() => router.push('/home'))
                 .catch((error) => {
                   console.error(error);
                   setCurrPage('error-page');
