@@ -14,12 +14,7 @@ import MongoDatabase from '../scripts/classes/MongoDatabase';
 // Components
 import LoadingPage from '../components/loading';
 import { HomeBtn } from '../components/Btns';
-
-function Gradient() {
-  return (
-    <div className="absolute h-full w-full bg-gradient-to-t from-black"></div>
-  );
-}
+import Gradient from '../components/Gradient';
 
 export default function LoginPage() {
   const router = useRouter();
