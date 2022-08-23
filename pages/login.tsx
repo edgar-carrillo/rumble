@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
@@ -14,29 +14,29 @@ import MongoDatabase from '../scripts/classes/MongoDatabase';
 // Components
 import LoadingPage from '../components/loading';
 import { HomeBtn } from '../components/Btns';
-
-function Gradient() {
-  return (
-    <div className="absolute h-full w-full bg-gradient-to-t from-black"></div>
-  );
-}
+import Gradient from '../components/Gradient';
 
 export default function LoginPage() {
+  const [database] = useState(new MongoDatabase());
   const router = useRouter();
   const [user, loading] = useAuthState(auth);
 
   useEffect(() => {
-    if (user) {
-      const database = new MongoDatabase();
-      database.getUser(user.email || '')
-        .then((response: any) => {
-          if (response.status === 200) router.push('/home');
-        })
-        .catch((err) => {
-          if (err.response.status === 404) router.push('/login-form');
-        });
+    async function routePage(email: string) {
+      try {
+        const user = await database.getUser(email);
+        router.push('/home');
+      } catch(error: any) {
+        if (error.response.status === 404) {
+          router.push('/login-form');
+        }
+      }
     }
-  }, [user, router]);
+
+    if (user) {
+      routePage(user.email || '');
+    }
+  }, [user, router, database]);
 
   if (loading) {
     return (
