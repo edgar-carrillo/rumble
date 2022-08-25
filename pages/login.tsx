@@ -25,7 +25,7 @@ export default function LoginPage() {
     async function routePage(email: string) {
       try {
         const user = await database.getUser(email);
-        router.push('/home');
+        if (user) router.push('/home');
       } catch(error: any) {
         if (error.response.status === 404) {
           router.push('/login-form');

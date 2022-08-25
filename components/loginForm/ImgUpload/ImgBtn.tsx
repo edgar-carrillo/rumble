@@ -34,7 +34,7 @@ export default function ImgBtn({ eventHandler, addIcon }: ImgBtnProps) {
 
   return (
     <div className={baseClass}>
-      <Image src={iconSrc} alt="#" height="50%" width="50%" layout="fill" objectFit="contain" />
+      <Image src={iconSrc} alt="#" layout="fill" objectFit="contain" />
       <input
         type="file"
         className="absolute h-full w-full bg-amber opacity-0"
