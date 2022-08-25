@@ -1,6 +1,5 @@
 import React, { useState, useRef, useMemo, createRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
-React.useLayoutEffect = React.useEffect;
 
 // Firebase
 import { useAuthState } from 'react-firebase-hooks/auth';
