@@ -1,6 +1,6 @@
 // Components
 import BackBtn from '../BackBtn';
-import { HomeBtn } from '../Btns';
+import RoundedBtn from '../buttons/RoundedBtn';
 
 interface LoginPageLayoutProps {
   readonly goPrevPage: () => void;
@@ -32,7 +32,7 @@ export default function LoginPageLayout({
       {children}
       {
         showButton ?
-          <HomeBtn text="Next" clickHandler={goNextPage} /> :
+          <RoundedBtn text="Next" clickHandler={goNextPage} /> :
           <></>
       }
     </div>
