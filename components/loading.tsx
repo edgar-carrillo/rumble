@@ -1,7 +1,7 @@
 import Image from 'next/image';
 
 // Assets
-import spinnerSrc from '../public/images/spinner.gif';
+import spinnerSrc from '../public/images/spinners/spinner.gif';
 
 interface LoadingPageProps {
   readonly title: string;
