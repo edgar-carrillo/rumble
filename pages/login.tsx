@@ -13,7 +13,7 @@ import MongoDatabase from '../scripts/classes/MongoDatabase';
 
 // Components
 import LoadingPage from '../components/loading';
-import { HomeBtn } from '../components/Btns';
+import RoundedBtn from '../components/buttons/RoundedBtn';
 import Gradient from '../components/Gradient';
 
 export default function LoginPage() {
@@ -71,8 +71,8 @@ export default function LoginPage() {
           </div>
           {/* ---------- Buttons ---------- */}
           <div className="flex flex-col gap-5">
-            <HomeBtn text="Sign in with Google" clickHandler={() => signInWithRedirect(auth, provider)} />
-            <HomeBtn text="Visit More Apps" link="https://www.edgarthedeveloper.com/" secondary />
+            <RoundedBtn text="Sign in with Google" clickHandler={() => signInWithRedirect(auth, provider)} />
+            <RoundedBtn text="Visit More Apps" link="https://www.edgarthedeveloper.com/" white />
           </div>
           {/* ---------- Terms and Conditions ---------- */}
           <a

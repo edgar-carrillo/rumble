@@ -16,23 +16,23 @@ const loginFormModel = {
     return '';
   },
 
-  getLocations: (location: string) => new Promise((resolve, reject) => {
-    axios.get(`https://api.teleport.org/api/cities/?search=${location}`)
-      .then((response) => {
-        let locations = response.data._embedded['city:search-results']
-          .filter((location: any) => {
-            if (location.matching_full_name.includes('United States')) return location;
-          });
-        resolve(locations);
-      })
-      .catch((err) => reject(err));
-  }),
+  getLocations: async (location: string) => {
+    const response = await axios.get(`https://api.teleport.org/api/cities/?search=${location}`);
+    const locationsData = response.data._embedded['city:search-results'].filter((location: any) => {
+      if (location.matching_full_name.includes('United States')) {
+        return location;
+      }
+    });
+
+    const locationNames = locationsData.map((location: any) => location.matching_full_name);
+    return locationNames;
+  },
 
   formatInputName: (name: string) => {
     return name.split(' ').join('-').toLowerCase();
   },
 
-  formatLocationName: (location: string) => {
+  shortenLocationName: (location: string) => {
     if (location.length > 40) location = location.slice(0, 41).concat('...');
     return location;
   },
