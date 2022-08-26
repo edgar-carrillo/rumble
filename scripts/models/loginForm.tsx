@@ -21,9 +21,16 @@ const loginFormModel = {
       .then((response) => {
         let locations = response.data._embedded['city:search-results']
           .filter((location: any) => {
-            if (location.matching_full_name.includes('United States')) return location;
+            if (location.matching_full_name.includes('United States')) {
+              return location;
+            }
           });
-        resolve(locations);
+
+        let locationNames = locations.map((location: any) => {
+          return location.matching_full_name;
+        });
+
+        resolve(locationNames);
       })
       .catch((err) => reject(err));
   }),
@@ -32,7 +39,7 @@ const loginFormModel = {
     return name.split(' ').join('-').toLowerCase();
   },
 
-  formatLocationName: (location: string) => {
+  shortenLocationName: (location: string) => {
     if (location.length > 40) location = location.slice(0, 41).concat('...');
     return location;
   },
